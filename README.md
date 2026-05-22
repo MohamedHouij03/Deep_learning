@@ -75,3 +75,9 @@ Assurez-vous de disposer de Python 3.10+ et d'un environnement équipé d'un GPU
 
 ```bash
 pip install ultralytics roboflow gradio tensorflow torch matplotlib numpy
+
+## 🎥 6. Guide d'Exécution du Code
+
+
+https://github.com/user-attachments/assets/bfb26792-0fa3-462f-895f-cf81df5307dc
+
