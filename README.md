@@ -67,8 +67,10 @@ Suite aux expérimentations sur les vignettes, le modèle **YOLOv8 Nano (YOLOv8n
 * **Vitesse d'inférence :** `~8.2 ms` par image sur GPU Tesla T4.
 
 ---
+## 🎥 7. Vidéo démonstration
+https://github.com/user-attachments/assets/bfb26792-0fa3-462f-895f-cf81df5307dc
 
-## 💻 5. Guide d'Exécution du Code
+## 💻 6. Guide d'Exécution du Code
 
 ### 🛠️ Installation des Dépendances
 Assurez-vous de disposer de Python 3.10+ et d'un environnement équipé d'un GPU (recommandé pour YOLOv8).
@@ -76,8 +78,4 @@ Assurez-vous de disposer de Python 3.10+ et d'un environnement équipé d'un GPU
 ```bash
 pip install ultralytics roboflow gradio tensorflow torch matplotlib numpy
 
-## 🎥 6. Guide d'Exécution du Code
-
-
-https://github.com/user-attachments/assets/bfb26792-0fa3-462f-895f-cf81df5307dc
 
