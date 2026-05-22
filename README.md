@@ -1,56 +1,77 @@
-# ⚽ Football Image Understanding: From Bounding-Box Crops Classification to End-to-End Object Detection (YOLOv8)
+# ⚽ Football Image Understanding: From Bounding-Box Crops to End-to-End Object Detection
 
-A comprehensive deep learning experimentation framework designed to analyze and understand football match imagery. This project transitions from a modular academic baseline (evaluating MLPs, CNNs, RNNs, and LSTMs on cropped regions) to a fully deployed end-to-end real-time object detection system using **YOLOv8** and a **Gradio** web interface.
-
----
-
-## 📌 Project Overview & Objectives
-
-The goal of this project is to develop a robust pipeline for detecting and classifying key elements in professional football matches (Players, Referees, Goalkeepers, and Balls). 
-
-The repository is structured into two main phases:
-1. **Academic Baseline Phase:** Rather than testing complex detection architectures from scratch, we isolate localized bounding boxes into **64x64 pixel crops** to evaluate and benchmark raw sequence and spatial feature extraction capabilities across standard architectures (MLP, CNN, RNN, LSTM).
-2. **End-to-End Deployment Phase:** Leveraging the insights from the baseline phase, we implement and train a full **YOLOv8** object detection model, deploying it into an interactive user-facing application.
+<p align="center">
+  <img src="https://img.shields.io/badge/Deep%20Learning-Framework-005088?style=for-the-badge&logo=cpu" alt="Deep Learning Framework">
+  <img src="https://img.shields.io/badge/YOLOv8-Success-11caa0?style=for-the-badge&logo=ultralytics" alt="YOLOv8 Success">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python" alt="Python Version">
+  <img src="https://img.shields.io/badge/Gradio-UI%20Deployed-orange?style=for-the-badge&logo=gradio" alt="Gradio Deployed">
+</p>
 
 ---
 
-## 📊 Dataset Pipeline & Structure
+## 📌 1. Description du Problème
 
-The dataset is securely pulled from **Roboflow** (Project: `testing_football`, Workspace: `mohamed-houij`).
+L'analyse automatique de flux vidéo de football se heurte à plusieurs défis majeurs : la forte densité de joueurs dans des zones restreintes, les occlusions partielles, les variations de luminosité et la vitesse élevée du ballon. 
 
-### Data Splits & Volume
-* **Train Set:** 12,986 annotations across 5,934 unique images
-* **Validation Set:** 1,478 annotations across 602 unique images
-* **Test Set:** 371 annotations across 149 unique images
+Pour résoudre ce problème de manière rigoureuse, notre approche a été divisée en deux phases distinctes :
+* 🔬 **Phase Académique Expérimentale :** Une approche modulaire consistant à isoler des vignettes (*crops*) de dimensions $64 \times 64$ pixels afin d'évaluer la capacité intrinsèque d'architectures standards (**MLP, CNN, RNN, LSTM**) à classifier les types d'entités de manière isolée.
+* 🚀 **Phase de Détection Globale (End-to-End) :** Le déploiement d'une architecture unifiée de pointe (**YOLOv8**) capable de réaliser simultanément la localisation spatiale et la classification des entités directement sur l'image entière en temps réel.
 
-### Target Classes (11 total)
-The framework maps and standardizes 11 target categories present in the dataset:
+---
+
+## 📊 2. Pipeline et Structure du Jeu de Données
+
+Les données proviennent de la plateforme **Roboflow** (Projet : `testing_football`, Workspace : `mohamed-houij`).
+
+### 📦 Volume et Répartition des Données
+* 🟩 **Entraînement (*Train Set*) :** 5 934 images uniques contenant 12 986 annotations de boîtes englobantes.
+* 🟨 **Validation (*Val Set*) :** 602 images contenant 1 478 annotations.
+* 🟥 **Test (*Test Set*) :** 149 images contenant 371 annotations.
+
+### 🏷️ Classes Cibles (11 au total)
+Le dataset natif regroupe 11 labels qui ont été cartographiés et standardisés par notre pipeline :
 `Arbitre`, `Ballon`, `Football`, `Gardien`, `Joueur`, `Player`, `ball`, `big`, `person`, `player`, `refere`.
 
-### Preprocessing Blueprint (`safe_crop`)
-For the benchmarking phase, a custom preprocessing pipeline was developed to extract safe bounding box regions:
-* Bounding limits (`xmin, ymin, xmax, ymax`) are read and verified.
-* Images are safely cropped, normalized to a `float32` range between `0.0` and `1.0`, and dynamically resized to a uniform **64x64x3** matrix.
+### ⚙️ Prétraitement : Fonction `safe_crop`
+Pour la phase de classification, un script personnalisé extrait les coordonnées de chaque boîte englobante, applique des marges de sécurité pour éviter les sorties de matrice, normalise les intensités de pixels dans la plage $[0.0, 1.0]$ en `float32`, et redimensionne l'image au format standard **64x64x3**.
 
 ---
 
-## 🔬 Phase 1: Architectural Experiments (Baseline Classification)
+## 🔬 3. Architectures Expérimentées & Méthodologie
 
-We sequentially engineered, hyper-tuned, and benchmarked several architectures on the object crops:
-
-* **Multi-Layer Perceptrons (MLPs):** Established a pixel-level dense baseline.
-* **Hyperparameter & Regularization Tuning:** Systematically evaluated standard activation functions (ReLU vs variants), adaptive learning rates, and anti-overfitting components (Dropout layers and $L_2$ weight decay).
-* **Convolutional Neural Networks (CNNs):** Implemented spatial feature extractors to properly capture local shapes, player jersey details, and context.
-* **Recurrent Architectures (Vanilla RNN & LSTM):** Experimented with sequence-based classification by processing image row/patch matrices as sequence timestamps to test spatial sequence dependencies.
+Quatre types d'architectures ont fait l'objet d'un étalonnage rigoureux sur la tâche de classification de crops :
+1. **Multi-Layer Perceptrons (MLP) :** Établissement d'une baseline dense et plate au niveau des pixels.
+2. **Ajustement des Hyperparamètres :** Évaluation comparative des fonctions d'activation (ReLU et variantes), optimisation des taux d'apprentissage, et intégration de la régularisation (Dropout et pénalité $L_2$).
+3. **Convolutional Neural Networks (CNN) :** Extraction de caractéristiques spatiales pour capturer la géométrie locale et les motifs texturaux des maillots.
+4. **Réseaux Récurrents (Simple RNN & LSTM) :** Traitement des lignes ou patchs de l'image sous forme de séquences pseudo-temporelles afin d'évaluer la mémoire de contexte spatial.
 
 ---
 
-## 🚀 Phase 2: Object Detection (YOLOv8) & Results
+## 🏆 4. Performances et Résultats Établis
 
-The final stage of the project introduces a unified **YOLOv8 Nano (YOLOv8n)** architecture trained for 50 epochs on the native image dataset. It achieves competitive localization metrics, handling simultaneous multi-class object detection.
+### 🎯 Classification de Crops (Phase 1)
 
-### 📈 Training & Validation Performance
-The model successfully converged over the 50-epoch cycle:
+| Icône | Modèle / Architecture | Précision Globale (*Accuracy*) | Type de Features Exploité |
+| :---: | :--- | :---: | :--- |
+| 👑 | **LSTM Baseline** | **77.1%** | Séquence de pixels (lignes) |
+| 🖼️ | **CNN Baseline** | **70.6%** | Spatio-temporel (Convolutions 2D) |
+| 🧠 | **MLP Dense** | **63.1%** | Vecteur de pixels aplati |
+| 🔄 | **Simple RNN** | **48.2%** | Séquence basique sans porte |
 
-* **Validation Set:** **$42.79\%$ mAP50**
-* **Test Set:** **$66.18\%$ mAP50**
+### ⚡ Détection End-to-End YOLOv8 (Phase 2)
+
+Suite aux expérimentations sur les vignettes, le modèle **YOLOv8 Nano (YOLOv8n)** a été entraîné sur les images complètes pendant **50 époques**. Malgré les ajustements de chemins d'accès locaux requis lors du déploiement final, les métriques d'évaluation valident l'efficacité du modèle :
+
+* **Validation mAP50 :** `42.79%`
+* **Test mAP50 :** `66.18%`
+* **Vitesse d'inférence :** `~8.2 ms` par image sur GPU Tesla T4.
+
+---
+
+## 💻 5. Guide d'Exécution du Code
+
+### 🛠️ Installation des Dépendances
+Assurez-vous de disposer de Python 3.10+ et d'un environnement équipé d'un GPU (recommandé pour YOLOv8).
+
+```bash
+pip install ultralytics roboflow gradio tensorflow torch matplotlib numpy
